@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-asdf-516 — Developer Profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400&display=swap');
+
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --border: #1e2330;
+      --accent1: #4ef0c0;
+      --accent2: #ff6b6b;
+      --accent3: #ffd166;
+      --accent4: #6b9bff;
+      --text: #c8d0e0;
+      --muted: #4a5568;
+      --glow: rgba(78, 240, 192, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* grid bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(78, 240, 192, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 240, 192, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 56px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4ef0c0 0%, #6b9bff 50%, #ff6b6b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 36px;
+      font-weight: 900;
+      color: #0a0c10;
+      box-shadow: 0 0 0 3px var(--border), 0 0 40px rgba(78, 240, 192, 0.3);
+      animation: pulse 3s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: inline;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 3px var(--border), 0 0 30px rgba(78, 240, 192, 0.25);
+      }
+
+      50% {
+        box-shadow: 0 0 0 3px var(--border), 0 0 55px rgba(78, 240, 192, 0.45);
+      }
+    }
+
+    .online-dot {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 14px;
+      height: 14px;
+      background: var(--accent1);
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .header-info {
+      flex: 1;
+    }
+
+    .name {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .role-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .role {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--accent1);
+      background: rgba(78, 240, 192, 0.08);
+      border: 1px solid rgba(78, 240, 192, 0.25);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+
+    .company {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .bio {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      max-width: 540px;
+      opacity: 0.85;
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .card:hover {
+      border-color: rgba(78, 240, 192, 0.3);
+      box-shadow: 0 0 20px rgba(78, 240, 192, 0.06);
+    }
+
+    /* ── SKILLS GRID ── */
+    .skills-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: all 0.25s;
+      cursor: default;
+    }
+
+    .skill-card:hover {
+      border-color: var(--c);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--c) 15%, transparent);
+      transform: translateY(-2px);
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .skill-name {
+      font-size: 12px;
+      font-family: 'Space Mono', monospace;
+      color: var(--c);
+    }
+
+    .skill-lv {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .bar-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--c);
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 6px var(--c);
+    }
+
+    .skill-tags {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .stag {
+      font-size: 10px;
+      padding: 2px 6px;
+      background: color-mix(in srgb, var(--c) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c) 20%, transparent);
+      border-radius: 3px;
+      color: var(--c);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* ── STACK RADAR CHART ── */
+    .radar-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+
+    .radar-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    svg.radar {
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .radar-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-bar-wrap {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .legend-bar {
+      height: 100%;
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .legend-pct {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      width: 34px;
+      text-align: right;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--c, var(--accent1));
+      box-shadow: 0 0 8px var(--c, var(--accent1));
+    }
+
+    .tl-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .tl-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .tl-desc {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.7;
+      opacity: 0.8;
+    }
+
+    .tl-desc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .tl-desc li {
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .tl-desc li::before {
+      content: '-';
+      position: absolute;
+      left: 0;
+      color: var(--muted, var(--muted));
+      font-size: 10px;
+      line-height: 1.9;
+    }
+
+    /* ── PERSONALITY ── */
+    .personality-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .trait-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .trait-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.25s;
+    }
+
+    .trait-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(78, 240, 192, 0.25);
+    }
+
+    .trait-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .trait-name {
+      font-size: 11px;
+      font-family: 'Space Mono', monospace;
+      color: var(--accent1);
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+
+    .trait-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── LANGUAGEß CLOUD ── */
+    .language-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .language-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .language {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 20px;
+      cursor: default;
+      transition: all 0.2s;
+    }
+
+    .language:hover {
+      transform: scale(1.08);
+    }
+
+    /* ── STATUS FOOTER ── */
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent1);
+      animation: blink 2s infinite;
+      flex-shrink: 0;
+    }
+
+    .status-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status-text strong {
+      color: var(--accent1);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media(max-width:560px) {
+      .radar-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .trait-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <img src="https://avatars.githubusercontent.com/u/149256023?v=4" alt="Profile" />
+        </div>
+      </div>
+      <div class="header-info">
+        <div class="name">DEV-asdf-516</div>
+        <div class="role-line">
+          <span class="role">소프트웨어 엔지니어</span>
+          <span class="role">백엔드 개발자</span>
+          <span class="company">@ BigWave Robotics</span>
+        </div>
+        <p class="bio">
+          안녕하세요.<br />
+          재밌어 보이는 건 다 해보는 개잡부 입니다.<br />
+          <strong style="color:var(--accent1)">아이스 아메리카노</strong>랑 <strong style="color:var(--accent1)">바닥치는 리니어
+            스위치</strong>(일명 바치리)를 좋아합니다.<br />
+          AI한테 반복작업을 위임하는 것을 아주 좋아합니다.<br />
+        </p>
+      </div>
+    </div>
+
+    <!-- LANGUGAE -->
+    <div class="language-section">
+      <div class="sec-label">Language</div>
+      <div class="language-cloud" id="languageCloud"></div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="skills-section">
+      <div class="sec-label">Core Stack</div>
+      <div class="skills-grid" id="skillGrid"></div>
+    </div>
+
+    <!-- RADAR -->
+    <div class="radar-section">
+      <div class="sec-label">Engineering Dimension</div>
+      <div class="card">
+        <div class="radar-wrap">
+          <svg class="radar" viewBox="0 0 200 200" id="radarSvg"></svg>
+          <div class="radar-legend" id="radarLegend"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="timeline-section">
+      <div class="sec-label">Work History</div>
+      <div class="card">
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </div>
+
+    <!-- PERSONALITY -->
+    <div class="personality-section">
+      <div class="sec-label">Character Traits</div>
+      <div class="trait-grid" id="traitGrid"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── SKILLS DATA ──
+    const skills = [
+      {
+        name: 'Server', pct: 90, color: '#ffd166',
+        tags: [
+          'Spring Boot', 'JPA', 'MyBatis', 'QueryDSL', 'JDBC',
+          'Fast API'
+        ]
+      },
+      {
+        name: 'DB', pct: 82, color: '#fb923c',
+        tags: ['MySQL', 'MariaDB', 'Aurora RDS', 'Redis', 'Mongo DB']
+      },
+      {
+        name: 'Client', pct: 65, color: '#6b9bff',
+        tags: ['Flutter', 'tkinter(Python GUI)']
+      },
+      {
+        name: 'Infrastructure', pct: 55, color: '#4ef0c0',
+        tags: ['AWS EC2', 'AWS lambda', 'AWS CloudFront', 'AWS S3', 'AWS ECR', 'Algolia']
+      },
+      {
+        name: 'DevOps', pct: 50, color: '#ff6b6b',
+        tags: ['Docker', 'GitLab CI/CD', 'Github Action', 'AWS CodeDeploy']
+      },
+      {
+        name: 'Game', pct: 40, color: '#c084fc',
+        tags: ['RenPy']
+      }
+    ];
+
+    const grid = document.getElementById('skillGrid');
+    skills.forEach(s => {
+      grid.innerHTML += `
+      <div class="skill-card" style="--c:${s.color}">
+        <div class="skill-header">
+          <span class="skill-name">${s.name}</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-pct="${s.pct}" style="background:${s.color};box-shadow:0 0 6px ${s.color}"></div></div>
+        <div class="skill-tags">${s.tags.map(t => `<span class="stag">${t}</span>`).join('')}</div>
+      </div>`;
+    });
+
+    // animate bars
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill').forEach(el => {
+        el.style.width = el.dataset.pct + '%';
+      });
+    }, 200);
+
+    // ── RADAR ──
+    const dims = [
+      { label: 'Learning Agility', val: 92, color: '#ff6b6b' },
+      { label: 'System Design', val: 66, color: '#ffd166' },
+      { label: 'Automation', val: 75, color: '#c084fc' },
+      { label: 'Problem Solving', val: 90, color: '#6b9bff' },
+      { label: 'Communication', val: 47, color: '#4ef0c0' },
+      { label: 'Team Work', val: 71, color: '#fb923c' },
+    ];
+
+    const cx = 100, cy = 100, r = 72, n = dims.length;
+    const svg = document.getElementById('radarSvg');
+
+    // grid circles
+    [0.25, 0.5, 0.75, 1].forEach(t => {
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', cx); c.setAttribute('cy', cy);
+      c.setAttribute('r', r * t);
+      c.setAttribute('fill', 'none');
+      c.setAttribute('stroke', '#1e2330');
+      c.setAttribute('stroke-width', '1');
+      svg.appendChild(c);
+    });
+
+    // axis lines & labels
+    dims.forEach((d, i) => {
+      const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+      const x2 = cx + r * Math.cos(angle);
+      const y2 = cy + r * Math.sin(angle);
+      const lx = cx + (r + 18) * Math.cos(angle);
+      const ly = cy + (r + 18) * Math.sin(angle);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('stroke', '#1e2330'); line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
+
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', lx); text.setAttribute('y', ly + 4);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', '#4a5568');
+      text.setAttribute('font-size', '9');
+      text.setAttribute('font-family', 'Space Mono,monospace');
+      text.textContent = d.label;
+      svg.appendChild(text);
+    });
+
+    // data polygon
+    function makePolygon(vals, opacity) {
+      const pts = vals.map((v, i) => {
+        const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+        const rr = r * (v / 100);
+        return [cx + rr * Math.cos(angle), cy + rr * Math.sin(angle)];
+      });
+      const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      poly.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+      return poly;
+    }
+
+    // baseline polygon (100%)
+    const baseline = makePolygon(dims.map(() => 100));
+    baseline.setAttribute('fill', 'rgba(160,140,200,0.09)');
+    baseline.setAttribute('stroke', 'none');
+    svg.appendChild(baseline);
+
+    const fill = makePolygon(dims.map(d => d.val));
+    fill.setAttribute('fill', 'rgba(78,240,192,0.08)');
+    fill.setAttribute('stroke', '#4ef0c0');
+    fill.setAttribute('stroke-width', '1.5');
+    svg.appendChild(fill);
+
+    // dots
+    dims.forEach((d, i) => {
+      const angle = (Math.PI * 2 / n) * i - Math.PI / 2;
+      const rr = r * (d.val / 100);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', cx + rr * Math.cos(angle));
+      dot.setAttribute('cy', cy + rr * Math.sin(angle));
+      dot.setAttribute('r', '4');
+      dot.setAttribute('fill', d.color);
+      dot.setAttribute('filter', `drop-shadow(0 0 4px ${d.color})`);
+      svg.appendChild(dot);
+    });
+
+    // legend
+    const legend = document.getElementById('radarLegend');
+    dims.forEach(d => {
+      legend.innerHTML += `
+        <div class="legend-item">
+          <div class="legend-dot" style="background:${d.color};box-shadow:0 0 6px ${d.color}"></div>
+          <span style="font-size:11px;font-family:'Space Mono',monospace;color:#c8d0e0;width:110px">${d.label}</span>
+          <div class="legend-bar-wrap">
+            <div class="legend-bar" data-pct="${d.val}" style="background:${d.color}"></div>
+          </div>
+          <span class="legend-pct">${d.val}%</span>
+        </div>`;
+    });
+    setTimeout(() => {
+      document.querySelectorAll('.legend-bar').forEach(el => {
+        el.style.width = el.dataset.pct + '%';
+      });
+    }, 300);
+
+    // ── TIMELINE ──
+    const events = [
+      { date: '2025.10-now', title: '빅웨이브로보틱스(주)', desc: ['마로솔 플랫폼 백엔드 개발 및 운영', '마로솔 내부 운영 대시보드 구축'], color: '#4ef0c0' },
+      {
+        date: '2022.11-2025.10', title: '오큐브(주)', desc: [
+          '이카플러그 전기차 급속 충전기 GUI 2종 개발',
+          '2025 제조데이터 표준화 사업 참여 - 참조모델 지원 도구 GUI 2종 개발',
+          'StageFive 청구수납 BackOffice 백엔드 개발',
+          '자사 금융 데이터 솔루션 개발',
+        ], color: '#4ef0c0'
+      },
+    ];
+
+    const tl = document.getElementById('timeline');
+    events.forEach(e => {
+      tl.innerHTML += `
+      <div class="tl-item" style="--c:${e.color}">
+        <div class="tl-date">${e.date}</div>
+        <div class="tl-title">${e.title}</div>
+        <div class="tl-desc">${Array.isArray(e.desc) ? `<ul>${e.desc.map(d => `<li>${d}</li>`).join('')}</ul>` : e.desc}</div>
+      </div>`;
+    });
+
+    // ── TRAITS ──
+    const traits = [
+      { icon: '🔧', name: '실용주의자', desc: '이론보다 동작하는 코드 선호' },
+      { icon: '🦥', name: '생산적 게으름', desc: '반복 작업은 자동화' },
+      { icon: '🔄', name: '점진적 개선', desc: '동작 먼저, 이후 지속적 개선' },
+    ];
+
+    const tg = document.getElementById('traitGrid');
+    traits.forEach(t => {
+      tg.innerHTML += `
+        <div class="trait-card">
+          <div class="trait-icon">${t.icon}</div>
+          <div class="trait-name">${t.name}</div>
+          <div class="trait-desc">${t.desc}</div>
+        </div>`;
+    });
+
+    // ── LANGUAGES ──
+    const languages = [
+      { t: 'Java', c: '#ff6b6b' },
+      { t: 'Python', c: '#6b9bff' },
+      { t: 'Dart', c: '#c084fc' },
+      { t: 'javascript', c: '#94a3b8' },
+    ];
+
+    const kc = document.getElementById('languageCloud');
+    languages.forEach(k => {
+      kc.innerHTML += `<span class="language" style="
+    background:${k.c}18;
+    border:1px solid ${k.c}40;
+    color:${k.c}
+  ">${k.t}</span>`;
+    });
+  </script>
+</body>
+
+</html>
